@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 
-import SocketsProvider from '../context/socket.content';
+import SocketsProvider from '../context/socket-context';
 
 function MyApp({ Component, pageProps }) {
   return (
