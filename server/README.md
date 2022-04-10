@@ -13,3 +13,7 @@ yarn add @types/express @types/node ts-node typescript @types/config @types/pino
 ```sh
 yarn add express config socket.io pino dayjs pino-pretty mongoose
 ```
+
+```sh
+yarn add nanoid
+```
