@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Messages from '../components/messages';
 import Rooms from '../components/rooms';
@@ -17,6 +17,11 @@ const Home = () => {
     setUsername(value);
     localStorage.setItem('username', value);
   };
+
+  useEffect(() => {
+    if (usernameRef)
+      usernameRef.current.value = localStorage.getItem('username') || '';
+  }, []);
 
   return (
     <div id="root">
