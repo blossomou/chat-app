@@ -17,12 +17,32 @@ const Rooms = () => {
     //set room name input to empty string
     newRoomRef.current.value = '';
   };
+
+  const handleJoinRoom = (key) => {
+    if (key === roomId) return;
+
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
+  };
   return (
     <nav>
       <div>
         <input ref={newRoomRef} placeholder="Room name" />
         <button onClick={handleCreateRoom}>CREATE ROOM</button>
       </div>
+
+      {Object.keys(rooms).map((key) => {
+        return (
+          <div key={key}>
+            <button
+              disabled={key === roomId}
+              title={`Join ${rooms[key].name}`}
+              onClick={() => handleJoinRoom(key)}
+            >
+              {rooms[key].name}
+            </button>
+          </div>
+        );
+      })}
     </nav>
   );
 };
