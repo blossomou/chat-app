@@ -2,47 +2,55 @@ import React, { useRef } from 'react';
 
 import EVENTS from '../config/event';
 import { useSockets } from '../context/socket-context';
+import styles from '../styles/Room.module.css';
 
 const Rooms = () => {
   const { socket, roomId, rooms } = useSockets();
   const newRoomRef = useRef(null);
-  const handleCreateRoom = () => {
+
+  function handleCreateRoom() {
     //get the room name
     const roomName = newRoomRef.current.value || '';
+
     if (!String(roomName).trim()) return;
 
-    //emit room created event
+    // emit room created event
     socket.emit(EVENTS.CLIENT.CREATE_ROOM, { roomName });
 
-    //set room name input to empty string
+    // set room name input to empty string
     newRoomRef.current.value = '';
-  };
+  }
 
-  const handleJoinRoom = (key) => {
+  function handleJoinRoom(key) {
     if (key === roomId) return;
 
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, key);
-  };
+  }
+
   return (
-    <nav>
-      <div>
+    <nav className={styles.wrapper}>
+      <div className={styles.createRoomWrapper}>
         <input ref={newRoomRef} placeholder="Room name" />
-        <button onClick={handleCreateRoom}>CREATE ROOM</button>
+        <button className="cta" onClick={handleCreateRoom}>
+          CREATE ROOM
+        </button>
       </div>
 
-      {Object.keys(rooms).map((key) => {
-        return (
-          <div key={key}>
-            <button
-              disabled={key === roomId}
-              title={`Join ${rooms[key].name}`}
-              onClick={() => handleJoinRoom(key)}
-            >
-              {rooms[key].name}
-            </button>
-          </div>
-        );
-      })}
+      <ul className={styles.roomList}>
+        {Object.keys(rooms).map((key) => {
+          return (
+            <div key={key}>
+              <button
+                disabled={key === roomId}
+                title={`Join ${rooms[key].name}`}
+                onClick={() => handleJoinRoom(key)}
+              >
+                {rooms[key].name}
+              </button>
+            </div>
+          );
+        })}
+      </ul>
     </nav>
   );
 };
